@@ -1,3 +1,15 @@
+/* Colors */
+/* Body */
+/* CSS */
+body {
+  background-color: #323232;
+  font-family: 'Trirong', georgia, times, serif;
+  font-weight: 200;
+  font-size: 18px;
+}
 
+body, a {
+  color: #808080;
+}
 
 /*# sourceMappingURL=main.css.map */
