@@ -2,14 +2,14 @@
 /* Body */
 /* CSS */
 body {
-  background-color: #323232;
+  background-color: #0077b3;
   font-family: 'Trirong', georgia, times, serif;
   font-weight: 200;
   font-size: 18px;
 }
 
 body, a {
-  color: #808080;
+  color: #cod-gray;
 }
 
-/*# sourceMappingURL=main.css.map */
+/*# sourceMappingURL=style.css.map */

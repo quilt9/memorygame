@@ -21,13 +21,13 @@ $cod-gray: #111;
 
 /* CSS */
 body {
- background-color: #323232;
+ background-color: $deep-cerulean;
  font-family: 'Trirong', georgia, times, serif;
  font-weight: 200;
  font-size: 18px;
 }
 body, a {
- color: #808080;
+ color: #cod-gray;
 }
 
 

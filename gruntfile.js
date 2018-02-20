@@ -5,46 +5,29 @@ module.exports = function(grunt) {
 		    all: ['Gruntfile.js']
 		 }, //jshint
 
-		csslint: {
-			options: {
-				csslintrc: '.csslintrc'
-			},
-			strict: {
-				options: {
-				import: 2
-				},
-				src: ['builds/development/css/*.css']
-			},
-			lax: {
-				options: {
-				import: false
-			},
-				src: ['path/to/**/*.css']
-			}
-		}, //csslint
-
-		cssmin: {
-			target: {
-				files: [{
-				expand: true,
-				src: ['builds/css/*.css', '!*.min.css'],
-				dest: 'builds/css',
-				ext: '.min.css'
-				}]
-			}
-		}, //cssmin
-
 		sass: {
 			dist: {
 				options: {
 					style: 'expanded'
 				},
 				files: [{
-					src: 'components/sass/style.scss',
-					dest: 'builds/development/css/main.css'
+					src: 'src/sass/*.scss',
+					dest: 'builds/www/css/style.css'
 				}]
 			}
 		}, //sass
+
+		cssmin: {
+			target: {
+				files: [{
+				expand: true,
+				cwd: 'builds/www/css',
+				src: ['*.css', '!*.min.css'],
+				dest: 'builds/www/css',
+				ext: '.min.css'
+				}]
+			}
+		}, //cssmin
 
 		responsive_images: {
 			myTask: {
@@ -64,8 +47,8 @@ module.exports = function(grunt) {
 				},
 				files: [{
 					expand: true,
-					src: ['components/img/**.{jpg,gif,png}'],
-					dest: 'builds/development/img'
+					src: ['src/img/**.{jpg,gif,png}'],
+					dest: 'builds/www/img'
 				}]
 			}
 		}, //responsive_images
@@ -77,7 +60,7 @@ module.exports = function(grunt) {
 				expand: true,
 				src: ['**/*.{html,htm,php}'],
 				cwd: 'src/',
-				dest: 'build/'
+				dest: 'builds/'
 				}]
 			}
 		}, //responsive_images_extender
@@ -88,22 +71,21 @@ module.exports = function(grunt) {
 				banner: '\n\n//========================================\n'
 			},
 			dist: {
-				src: ['components/scripts/*.js'],
-				dest: 'builds/development/js/script.js'
+				src: ['src/scripts/*.js'],
+				dest: 'builds/www/js/script.js'
 			}
 		}, //concat
 
 		bower_concat: {
 			all: {
-				dest: 'builds/development/js/_bower.js',
-				cssDest: 'builds/development/css/_bower.css'
+				dest: 'builds/www/js/_bower.js',
+				cssDest: 'builds/www/css/_bower.css'
 			}
-		},
-
+		}, //bower_concat
 
 		wiredep: {
 			task: {
-				src: 'builds/development/**/*.html'
+				src: 'builds/www/*.html'
 			}
 		}, //wiredep
 
@@ -112,40 +94,59 @@ module.exports = function(grunt) {
 				options: {
 					hostname: 'localhost',
 					port: 3000,
-					base: 'builds/development/',
+					base: 'builds/www',
 					livereload: true
 				}
 			}
 		}, //connect
 
+    htmlmin: {                                     // Task
+	    dist: {                                    // Target
+				options: {                                 // Target options
+					removeComments: true,
+					collapseWhitespace: true
+				},
+				files: {                                   // Dictionary of files
+					'builds/www/index.html': 'src/index.html',     // 'destination': 'source'
+				}
+	    },
+	    dev: {                                       // Another target
+				files: {                                   // Dictionary of files
+					'builds/www/index.html': 'src/index.html',     // 'destination': 'source'
+				}
+	    }
+		}, //htmlmin
+
 		watch: {
 			options: {
-	      spawn: false,
-	      livereload: true
+	    	spawn: false,
+	    	livereload: true
 	    },
-		  scripts: {
-		    files: ['builds/development/**/*.html',
-		    				'components/scripts/**/*.js',
-		    				'components/sass/**/*.scss'],
-		    tasks: ['jshint', 'concat', 'sass']
+			scripts: {
+		    files: ['Gruntfile.js',
+				'src/scripts/*.js',
+				'src/sass/*.scss',
+				'builds/www/css/*.css',
+				'src/index.html'],
+		    tasks: ['jshint', 'concat', 'sass', 'cssmin', 'htmlmin']
 		  },
-		}
+		} //watch
 
 	}); //initConfig
 
-	grunt.loadNpmTasks('grunt-contrib-concat');
-	grunt.loadNpmTasks('grunt-contrib-sass');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
-	grunt.loadNpmTasks('grunt-contrib-watch');
-	grunt.loadNpmTasks('grunt-contrib-connect');
-	grunt.loadNpmTasks('grunt-wiredep');
-	grunt.loadNpmTasks('grunt-bower-concat');
+	grunt.loadNpmTasks('grunt-contrib-sass');
+	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks('grunt-responsive-images');
 	grunt.loadNpmTasks('grunt-responsive-images-extender');
-	grunt.loadNpmTasks('grunt-contrib-cssmin');
-	grunt.loadNpmTasks('grunt-contrib-csslint');
+	grunt.loadNpmTasks('grunt-contrib-concat');
+	grunt.loadNpmTasks('grunt-bower-concat');
+	grunt.loadNpmTasks('grunt-wiredep');
+	grunt.loadNpmTasks('grunt-contrib-connect');
+	grunt.loadNpmTasks('grunt-contrib-htmlmin');
+	grunt.loadNpmTasks('grunt-contrib-watch');
 
 
-	grunt.registerTask('default', ['wiredep', 'bower_concat', 'concat', 'sass', 'jshint', 'connect', 'watch']);
+	grunt.registerTask('default', ['htmlmin', 'concat', 'sass', 'cssmin', 'jshint', 'connect', 'watch']);
 
 }; //wrapper function
