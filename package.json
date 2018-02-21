@@ -1,12 +1,12 @@
 {
-  "name": "helenshiu_portfolio_site",
+  "name": "gruntworkflows",
   "version": "1.0.0",
-  "description": "Build my online portfolio site",
+  "description": "Setup for web development automation",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Helen Shiu hello@helenshiu.com",
+  "author": "Helen Shiu helen@quilt9.com",
   "license": "MIT",
   "devDependencies": {
     "grunt": "^1.0.1",
