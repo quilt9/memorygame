@@ -1,8 +1,13 @@
+
 module.exports = function(grunt) {
+
 	grunt.initConfig({
 
 		jshint: {
-		    all: ['Gruntfile.js']
+		    all: ['Gruntfile.js', 'src/scripts/*.js'],
+		    options: {
+        jshintrc: '.jshintrc'
+      }
 		 }, //jshint
 
 		sass: {
@@ -32,37 +37,89 @@ module.exports = function(grunt) {
 		responsive_images: {
 			myTask: {
 				options: {
+					newFilesOnly: true,
 					sizes: [{
+						name: 'small',
 						width: 320,
-						height: 240
 					},{
-						name: 'large',
-						width: 640
+						name: 'medium',
+						width: 640,
+						suffix: "_x1",
+						quality: 60
 					},{
 						name: "large",
 						width: 1024,
 						suffix: "_x2",
 						quality: 60
+					},{
+						name: "xlarge",
+						width: 2048,
+						suffix: "_x3",
+						quality: 60
 					}]
 				},
 				files: [{
 					expand: true,
-					src: ['src/img/**.{jpg,gif,png}'],
-					dest: 'builds/www/img'
+					src: ['**/*.{jpg,gif,png}'],
+					cwd: 'src/img/',
+					dest: 'src/tmp/'
 				}]
 			}
 		}, //responsive_images
 
+		imagemin: {
+	    dist: {
+        options: {
+        	progressive: true,
+        },
+        files: [{
+	        expand: true,
+	        cwd: 'src/tmp/',
+	        src: ['*.{png,jpg,gif}'],
+	        dest: 'builds/www/img/'
+        }]
+	    }
+		}, //imagemin
+
+		clean: {
+			contents: ['builds/www/img/*'],
+			files: ['builds/www/test', 'src/tmp']
+		}, //clean
+
+		copy: {
+		  main: {
+		    expand: true,
+		    cwd: 'src/img/',
+		    src: '**',
+		    dest: 'src/tmp/',
+		  },
+		}, //copy
+
 		responsive_images_extender: {
-			target: {
-				options: {},
-				files: [{
-				expand: true,
-				src: ['**/*.{html,htm,php}'],
-				cwd: 'src/',
-				dest: 'builds/'
-				}]
-			}
+			complete: {
+	      options: {
+	        baseDir: 'builds/www', 
+	        sizes: [{
+	          selector: '[alt]',
+	          sizeList: [{
+	            cond: 'max-width: 30em',
+	            size: '100vw'
+	          },{
+	            cond: 'max-width: 50em',
+	            size: '50vw'
+	          },{
+	            cond: 'default',
+	            size: 'calc(33vw - 100px)'
+	          }]
+	        }]
+	      },
+	      files: [{
+	        expand: true,
+	        src: ['index.html'],
+	        cwd: 'builds/www/',
+	        dest: 'builds/www/test/'
+	      }]
+	    }
 		}, //responsive_images_extender
 
 		concat: {
@@ -94,7 +151,7 @@ module.exports = function(grunt) {
 				options: {
 					hostname: 'localhost',
 					port: 3000,
-					base: 'builds/www',
+					base: 'src',
 					livereload: true
 				}
 			}
@@ -107,12 +164,7 @@ module.exports = function(grunt) {
 					collapseWhitespace: true
 				},
 				files: {                                   // Dictionary of files
-					'builds/www/index.html': 'src/index.html',     // 'destination': 'source'
-				}
-	    },
-	    dev: {                                       // Another target
-				files: {                                   // Dictionary of files
-					'builds/www/index.html': 'src/index.html',     // 'destination': 'source'
+					'builds/www/index.html': 'builds/www/test/index.html',     // 'destination': 'source'
 				}
 	    }
 		}, //htmlmin
@@ -128,7 +180,7 @@ module.exports = function(grunt) {
 				'src/sass/*.scss',
 				'builds/www/css/*.css',
 				'src/index.html'],
-		    tasks: ['jshint', 'concat', 'sass', 'cssmin', 'htmlmin']
+		    tasks: ['jshint', 'concat', 'sass', 'cssmin']
 		  },
 		} //watch
 
@@ -138,7 +190,10 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-sass');
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks('grunt-responsive-images');
+	grunt.loadNpmTasks('grunt-contrib-imagemin');
 	grunt.loadNpmTasks('grunt-responsive-images-extender');
+	grunt.loadNpmTasks('grunt-contrib-clean');
+	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-bower-concat');
 	grunt.loadNpmTasks('grunt-wiredep');
@@ -146,7 +201,8 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-htmlmin');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 
-
-	grunt.registerTask('default', ['htmlmin', 'concat', 'sass', 'cssmin', 'jshint', 'connect', 'watch']);
+	grunt.registerTask('build', ['clean:files', 'responsive_images_extender', 'htmlmin']);
+	grunt.registerTask('image', ['clean:contents', 'responsive_images', 'copy', 'imagemin']);
+	grunt.registerTask('default', ['concat', 'sass', 'cssmin', 'jshint', 'connect', 'watch']);
 
 }; //wrapper function
