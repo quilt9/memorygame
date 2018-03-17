@@ -27,5 +27,7 @@
     "grunt-responsive-images-extender": "^3.0.0",
     "grunt-wiredep": "^3.0.1"
   },
-  "dependencies": {}
+  "dependencies": {
+    "grunt-postcss": "^0.9.0"
+  }
 }

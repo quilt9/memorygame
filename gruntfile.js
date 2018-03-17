@@ -199,6 +199,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-wiredep');
 	grunt.loadNpmTasks('grunt-contrib-connect');
 	grunt.loadNpmTasks('grunt-contrib-htmlmin');
+	grunt.loadNpmTasks('grunt-postcss');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 
 	grunt.registerTask('build', ['clean:files', 'responsive_images_extender', 'htmlmin']);
