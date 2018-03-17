@@ -6,9 +6,21 @@ module.exports = function(grunt) {
 		jshint: {
 		    all: ['Gruntfile.js', 'src/scripts/*.js'],
 		    options: {
-        jshintrc: '.jshintrc'
-      }
+		    	browser: true,
+	        jshintrc: '.jshintrc'
+	      }
 		 }, //jshint
+
+		uglify: {
+			options: {
+			  mangle: false
+			},
+			my_target: {
+			  files: {
+			    'builds/www/js/script.min.js': ['builds/www/js/*.js', '!builds/www/js/*.min.js', '!builds/www/js/_bower.js']
+			  }
+			}
+		},	//uglify
 
 		sass: {
 			dist: {
@@ -16,11 +28,33 @@ module.exports = function(grunt) {
 					style: 'expanded'
 				},
 				files: [{
-					src: 'src/sass/*.scss',
+					src: 'src/sass/style.scss',
 					dest: 'builds/www/css/style.css'
 				}]
 			}
 		}, //sass
+
+    	postcss: {
+		  options: {
+		    map: true,
+		    processors: [
+		      require('autoprefixer')({browsers: ['last 8 version', 'ie 8', 'ie 9']})
+		    ]
+		  },
+		  dist: {
+		    src: 'builds/www/css/style.css'
+		  }
+		}, //postcss
+
+		autoprefixer: {
+			options: {
+				browsers: ['last 8 version', 'ie 8', 'ie 9']
+			},
+			single_file: {
+			     src: 'builds/www/css/style.css',
+			     dest: 'builds/www/css/style.css'
+			}
+		}, //autoprefixer
 
 		cssmin: {
 			target: {
@@ -82,7 +116,7 @@ module.exports = function(grunt) {
 		}, //imagemin
 
 		clean: {
-			contents: ['builds/www/img/*'],
+			contents: ['builds/www/img/*', 'src/tmp'],
 			files: ['builds/www/test', 'src/tmp']
 		}, //clean
 
@@ -97,29 +131,29 @@ module.exports = function(grunt) {
 
 		responsive_images_extender: {
 			complete: {
-	      options: {
-	        baseDir: 'builds/www', 
-	        sizes: [{
-	          selector: '[alt]',
-	          sizeList: [{
-	            cond: 'max-width: 30em',
-	            size: '100vw'
-	          },{
-	            cond: 'max-width: 50em',
-	            size: '50vw'
-	          },{
-	            cond: 'default',
-	            size: 'calc(33vw - 100px)'
-	          }]
-	        }]
-	      },
-	      files: [{
-	        expand: true,
-	        src: ['index.html'],
-	        cwd: 'builds/www/',
-	        dest: 'builds/www/test/'
-	      }]
-	    }
+		      options: {
+		        baseDir: 'builds/www',
+		        sizes: [{
+		          selector: '[alt]',
+		          sizeList: [{
+		            cond: 'max-width: 30em',
+		            size: '100vw'
+		          },{
+		            cond: 'max-width: 50em',
+		            size: '80vw'
+		          },{
+		            cond: 'default',
+		            size: 'calc(80vw - 100px)'
+		          }]
+		        }]
+		      },
+		      files: [{
+		        expand: true,
+		        src: ['index.html'],
+		        cwd: 'builds/www/',
+		        dest: 'builds/www/test/'
+		      }]
+		    }
 		}, //responsive_images_extender
 
 		concat: {
@@ -151,7 +185,7 @@ module.exports = function(grunt) {
 				options: {
 					hostname: 'localhost',
 					port: 3000,
-					base: 'src',
+					base: 'builds/www/',
 					livereload: true
 				}
 			}
@@ -166,7 +200,16 @@ module.exports = function(grunt) {
 				files: {                                   // Dictionary of files
 					'builds/www/index.html': 'builds/www/test/index.html',     // 'destination': 'source'
 				}
-	    }
+			},
+			dev: {
+				options: {                                 // Target options
+					removeComments: true,
+					collapseWhitespace: true
+				},
+				files: {                                   // Dictionary of files
+					'builds/www/index.html': 'src/index.html',     // 'destination': 'source'
+				},
+			}
 		}, //htmlmin
 
 		watch: {
@@ -180,7 +223,7 @@ module.exports = function(grunt) {
 				'src/sass/*.scss',
 				'builds/www/css/*.css',
 				'src/index.html'],
-		    tasks: ['jshint', 'concat', 'sass', 'cssmin']
+		    tasks: ['jshint', 'concat', 'sass', 'postcss', 'cssmin', 'htmlmin:dev']
 		  },
 		} //watch
 
@@ -200,10 +243,13 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-connect');
 	grunt.loadNpmTasks('grunt-contrib-htmlmin');
 	grunt.loadNpmTasks('grunt-postcss');
+	grunt.loadNpmTasks('autoprefixer');
 	grunt.loadNpmTasks('grunt-contrib-watch');
+	grunt.loadNpmTasks('grunt-contrib-uglify');
+	grunt.loadNpmTasks('grunt-autoprefixer');
 
-	grunt.registerTask('build', ['clean:files', 'responsive_images_extender', 'htmlmin']);
+	grunt.registerTask('build', ['clean:files', 'responsive_images_extender', 'htmlmin:dist']);
 	grunt.registerTask('image', ['clean:contents', 'responsive_images', 'copy', 'imagemin']);
-	grunt.registerTask('default', ['concat', 'sass', 'cssmin', 'jshint', 'connect', 'watch']);
+	grunt.registerTask('default', ['htmlmin:dev', 'concat', 'sass', 'cssmin', 'jshint', 'uglify', 'connect', 'watch']);
 
 }; //wrapper function

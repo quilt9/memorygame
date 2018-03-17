@@ -9,7 +9,10 @@
   "author": "Helen Shiu helen@quilt9.com",
   "license": "MIT",
   "devDependencies": {
+    "autoprefixer": "^8.1.0",
+    "colors.css": "^3.0.0",
     "grunt": "^1.0.1",
+    "grunt-autoprefixer": "^3.0.4",
     "grunt-bower-concat": "^1.0.0",
     "grunt-contrib-clean": "^1.1.0",
     "grunt-contrib-concat": "^1.0.1",
@@ -23,11 +26,14 @@
     "grunt-contrib-sass": "^1.0.0",
     "grunt-contrib-uglify": "^3.3.0",
     "grunt-contrib-watch": "^1.0.0",
+    "grunt-postcss": "^0.9.0",
     "grunt-responsive-images": "^1.10.1",
     "grunt-responsive-images-extender": "^3.0.0",
     "grunt-wiredep": "^3.0.1"
   },
   "dependencies": {
-    "grunt-postcss": "^0.9.0"
+    "normalize-scss": "^7.0.1",
+    "responsively-lazy": "^2.0.2",
+    "webfontloader": "^1.6.28"
   }
 }
