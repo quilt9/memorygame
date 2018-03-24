@@ -39,6 +39,8 @@ Thumbs.db
 # Grunt #
 #########
 node_modules
+test
+tmp
 
 # SASS/SCSS #
 #############
