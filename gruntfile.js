@@ -34,7 +34,7 @@ module.exports = function(grunt) {
 			}
 		}, //sass
 
-    	postcss: {
+    postcss: {
 		  options: {
 		    map: true,
 		    processors: [
@@ -167,19 +167,6 @@ module.exports = function(grunt) {
 			}
 		}, //concat
 
-		bower_concat: {
-			all: {
-				dest: 'builds/www/js/_bower.js',
-				cssDest: 'builds/www/css/_bower.css'
-			}
-		}, //bower_concat
-
-		wiredep: {
-			task: {
-				src: 'builds/www/*.html'
-			}
-		}, //wiredep
-
 		connect: {
 			server: {
 				options: {
@@ -238,8 +225,6 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-contrib-concat');
-	grunt.loadNpmTasks('grunt-bower-concat');
-	grunt.loadNpmTasks('grunt-wiredep');
 	grunt.loadNpmTasks('grunt-contrib-connect');
 	grunt.loadNpmTasks('grunt-contrib-htmlmin');
 	grunt.loadNpmTasks('grunt-postcss');
