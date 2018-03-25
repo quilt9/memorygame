@@ -235,6 +235,6 @@ module.exports = function(grunt) {
 
 	grunt.registerTask('build', ['clean:files', 'responsive_images_extender', 'htmlmin:dist']);
 	grunt.registerTask('image', ['clean:contents', 'responsive_images', 'copy', 'imagemin']);
-	grunt.registerTask('default', ['htmlmin:dev', 'concat', 'sass', 'cssmin', 'jshint', 'uglify', 'connect', 'watch']);
+	grunt.registerTask('default', ['postcss:dist', 'autoprefixer', 'htmlmin:dev', 'concat', 'sass', 'cssmin', 'jshint', 'uglify', 'connect', 'watch']);
 
 }; //wrapper function

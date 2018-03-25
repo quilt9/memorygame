@@ -1,7 +1,7 @@
 {
-  "name": "gruntworkflows",
+  "name": "Udacity-Matching-Game",
   "version": "1.0.0",
-  "description": "Setup for web development automation",
+  "description": "Create a Memory Game Using Plain Vanilla JavaScript - Udacity",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -9,11 +9,10 @@
   "author": "Helen Shiu helen@quilt9.com",
   "license": "MIT",
   "devDependencies": {
-    "autoprefixer": "^8.1.0",
+    "autoprefixer": "^8.2.0",
     "colors.css": "^3.0.0",
     "grunt": "^1.0.1",
     "grunt-autoprefixer": "^3.0.4",
-    "grunt-bower-concat": "^1.0.0",
     "grunt-contrib-clean": "^1.1.0",
     "grunt-contrib-concat": "^1.0.1",
     "grunt-contrib-connect": "^1.0.2",
@@ -29,13 +28,18 @@
     "grunt-postcss": "^0.9.0",
     "grunt-responsive-images": "^1.10.1",
     "grunt-responsive-images-extender": "^3.0.0",
-    "grunt-wiredep": "^3.0.1",
     "node-normalize-scss": "^3.0.0"
   },
   "dependencies": {
+    "browserslist-config-google": "^1.5.0",
     "html5-boilerplate": "^6.0.1",
     "normalize-scss": "^7.0.1",
+    "postcss-cli": "^5.0.0",
     "responsively-lazy": "^2.0.2",
     "webfontloader": "^1.6.28"
-  }
+  },
+  "browserslist": [
+    "last 2 versions",
+    ">1%"
+  ]
 }
