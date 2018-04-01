@@ -1,16 +1,6 @@
 /*
  * Create array holds all 16 cards
  */
-// Create array holds all 16 cards
-let card = document.getElementsByClassName('cards');
-let cards = [...card];
-// Loop to add event listerners to each card
-for (let i = 0; i < cards.length; i++) {
-	cards[i].addEventListener('click', displayCard);
-};
-
-
-
 
 /*
  * Display the cards on the page

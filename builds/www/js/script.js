@@ -2,9 +2,8 @@
 
 //========================================
 /*
- * Create a list that holds all of your cards
+ * Create array holds all 16 cards
  */
-
 
 /*
  * Display the cards on the page
