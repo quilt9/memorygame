@@ -2,9 +2,20 @@
 module.exports = function(grunt) {
 
 	grunt.initConfig({
+		
+		babel: {
+	    options: {
+	      sourceMap: true
+	    },
+	    dist: {
+	      files: {
+	        "builds/www/js/script.js": "src/scripts/app.js"
+	      }
+	    }
+	  }, //babel
 
 		jshint: {
-		    all: ['Gruntfile.js', 'src/scripts/*.js'],
+		    all: ['gruntfile.js', 'src/scripts/*.js'],
 		    options: {
 		    	browser: true,
 	        jshintrc: '.jshintrc'
@@ -228,10 +239,11 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-connect');
 	grunt.loadNpmTasks('grunt-contrib-htmlmin');
 	grunt.loadNpmTasks('grunt-postcss');
-	grunt.loadNpmTasks('autoprefixer');
+	grunt.loadNpmTasks('/usr/local/lib/node_modules/autoprefixer');
 	grunt.loadNpmTasks('grunt-contrib-watch');
-	grunt.loadNpmTasks('grunt-contrib-uglify');
+	grunt.loadNpmTasks('grunt-contrib-uglify-es');
 	grunt.loadNpmTasks('grunt-autoprefixer');
+	grunt.registerTask("default", ["babel"]);
 
 	grunt.registerTask('build', ['clean:files', 'responsive_images_extender', 'htmlmin:dist']);
 	grunt.registerTask('image', ['clean:contents', 'responsive_images', 'copy', 'imagemin']);
